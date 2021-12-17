@@ -22,7 +22,6 @@ public class HibernateUtil {
             // entity classlarımızı buraya ekleyeceğiz
             configuration.addAnnotatedClass(UserEntity.class);
             configuration.addAnnotatedClass(ArtistEntity.class);
-            configuration.addAnnotatedClass(AlbumEntity.class);
             configuration.addAnnotatedClass(CDEntity.class);
             configuration.addAnnotatedClass(DVDEntity.class);
             configuration.addAnnotatedClass(VinylEntity.class);

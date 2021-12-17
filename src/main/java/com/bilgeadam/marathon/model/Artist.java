@@ -4,7 +4,6 @@ public class Artist {
     private String firstName;
     private String lastName;
     private String description;
-    private Album albums;
 
     public Artist() {
     }
@@ -33,11 +32,4 @@ public class Artist {
         this.description = description;
     }
 
-    public Album getAlbums() {
-        return albums;
-    }
-
-    public void setAlbums(Album albums) {
-        this.albums = albums;
-    }
 }

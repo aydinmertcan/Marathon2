@@ -7,7 +7,7 @@ import com.bilgeadam.marathon.util.McUtils;
 import static com.bilgeadam.marathon.controller.UserController.write2DB;
 
 public class Menu {
-    public void menuItems() {
+    public void  menuItems() {
         int choice = 0;
         McUtils.header("Plak Dükkanına Hoşgeldiniz");
         System.out.println();
@@ -22,7 +22,6 @@ public class Menu {
                     break;
                 case 3:
                     signupScreen();
-
                     break;
                 case 99:
                     System.exit(-1);

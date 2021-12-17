@@ -12,7 +12,6 @@ import com.bilgeadam.marathon.enums.EDVDQuality;
 import com.bilgeadam.marathon.enums.EGenre;
 import com.bilgeadam.marathon.enums.EVinlyDiameter;
 import com.bilgeadam.marathon.enums.EVinylRPM;
-import com.bilgeadam.marathon.model.CD;
 import com.bilgeadam.marathon.util.McUtils;
 
 public class AdminPanel {
@@ -24,24 +23,67 @@ public class AdminPanel {
             choice = McUtils.readInt("Lütfen ne yapmak istediğinizi seçiniz:\n" + "\t1) Albüm oluştur\n"
                     + "\t2) Albüm güncelle\n" + "\t3) Albüm sil\n" + "\t99) Exit\n");
             switch (choice) {
-                case 1:
-                    createAlbum();
-                    break;
-                case 2:
-                    updateAlbum();
-                    System.out.println("Yapım aşamasında...");
-                    break;
-                case 3:
-                    System.out.println("Yapım aşamasında...");
-                    break;
-
-                case 99:
-                    System.exit(-1);
-                    break;
-
+                case 1 -> createAlbum();
+                case 2 -> updateAlbum();
+                case 3 -> deleteAlbum();
+                case 99 -> System.exit(-1);
             }
 
         } while (true);
+    }
+
+    private void deleteAlbum() {
+        System.out.println();
+        int choice = 0;
+        ArtistEntity artist = new ArtistEntity();
+        ArtistController artistController = new ArtistController();
+        choice = McUtils.readInt("Oluşturmak istediğiniz albümün tipi:\n" + "\t1) CD\n"
+                + "\t2) DVD\n" + "\t3) Vinyl\n" + "\t99) Exit\n");
+
+        switch (choice) {
+            case 1 -> {
+                CDEntity cdEntity = new CDEntity();
+                CDController controller = new CDController();
+                controller.delete(cdEntity);
+            }
+            case 2 -> {
+                DVDEntity dvdEntity = new DVDEntity();
+                DVDController dvdController = new DVDController();
+                dvdController.delete(dvdEntity);
+            }
+            case 3 -> {
+                VinylEntity vinylEntity = new VinylEntity();
+                VinylController vinylController = new VinylController();
+                vinylController.delete(vinylEntity);
+            }
+        }
+    }
+
+    private void updateAlbum() {
+        System.out.println();
+        int choice = 0;
+        ArtistEntity artist = new ArtistEntity();
+        ArtistController artistController = new ArtistController();
+        choice = McUtils.readInt("Oluşturmak istediğiniz albümün tipi:\n" + "\t1) CD\n"
+                + "\t2) DVD\n" + "\t3) Vinyl\n" + "\t99) Exit\n");
+
+        switch (choice) {
+            case 1 -> {
+                CDEntity cdEntity = new CDEntity();
+                CDController controller = new CDController();
+                controller.update(cdEntity);
+            }
+            case 2 -> {
+                DVDEntity dvdEntity = new DVDEntity();
+                DVDController dvdController = new DVDController();
+                dvdController.update(dvdEntity);
+            }
+            case 3 -> {
+                VinylEntity vinylEntity = new VinylEntity();
+                VinylController vinylController = new VinylController();
+                vinylController.update(vinylEntity);
+            }
+        }
     }
 
     public void createAlbum() {
@@ -52,7 +94,7 @@ public class AdminPanel {
         choice = McUtils.readInt("Oluşturmak istediğiniz albümün tipi:\n" + "\t1) CD\n"
                 + "\t2) DVD\n" + "\t3) Vinyl\n" + "\t99) Exit\n");
         switch (choice) {
-            case 1:
+            case 1 -> {
                 CDEntity cdEntity = new CDEntity();
                 CDController cdController = new CDController();
                 cdEntity.setName(McUtils.readString("Albümün ismi"));
@@ -64,16 +106,16 @@ public class AdminPanel {
                     cdEntity.setDiscountRate(1);
                 }
                 setAlbumGenres(cdEntity);
+                cdController.setDiscountedPrice(cdEntity);
                 artist.setFirstName(McUtils.readString("Artistin adı"));
                 artist.setLastName(McUtils.readString("Artistin soyadı"));
                 artist.setDescription(McUtils.readString("Artistin kısa biyografisi"));
                 cdEntity.setArtist(artist);
                 artist.addCD(cdEntity);
-
                 artistController.create(artist);
                 cdController.create(cdEntity);
-                break;
-            case 2:
+            }
+            case 2 -> {
                 DVDEntity dvdEntity = new DVDEntity();
                 DVDController dvdController = new DVDController();
                 dvdEntity.setName(McUtils.readString("Albümün ismi: "));
@@ -86,16 +128,16 @@ public class AdminPanel {
                 }
                 setAlbumGenres(dvdEntity);
                 setAlbumQuality(dvdEntity);
+                dvdController.setDiscountedPrice(dvdEntity);
                 artist.setFirstName(McUtils.readString("Artistin adı: "));
                 artist.setLastName(McUtils.readString("Artistin soyadı: "));
                 artist.setDescription(McUtils.readString("Artistin kısa biyografisi: "));
                 dvdEntity.setArtist(artist);
                 artist.addDVD(dvdEntity);
-
                 artistController.create(artist);
                 dvdController.create(dvdEntity);
-                break;
-            case 3:
+            }
+            case 3 -> {
                 VinylEntity vinylEntity = new VinylEntity();
                 VinylController vinylController = new VinylController();
                 vinylEntity.setName(McUtils.readString("Albümün ismi: "));
@@ -114,33 +156,14 @@ public class AdminPanel {
                 artist.setDescription(McUtils.readString("Artistin kısa biyografisi: "));
                 vinylEntity.setArtist(artist);
                 artist.addVinyl(vinylEntity);
-
                 artistController.create(artist);
                 vinylController.create(vinylEntity);
-                break;
-            case 99:
-                System.exit(-1);
-                break;
+            }
+            case 99 -> System.exit(-1);
         }
     }
 
-    public void updateAlbum() {
-        /*System.out.println();
-        int choice = 0;
-        ArtistEntity artist = new ArtistEntity();
-        ArtistController artistController = new ArtistController();
 
-        choice = McUtils.readInt("Güncellemek istediğiniz albümün tipi:\n" + "\t1) CD\n"
-                + "\t2) DVD\n" + "\t3) Vinyl\n" + "\t99) Exit\n");
-
-        switch (choice) {
-            case 1:
-                CDEntity entity = new CDEntity();
-                CDController controller = new CDController();
-                controller.update(entity);
-                break;
-        }*/
-    }
 
     private void setVinylSpeed(VinylEntity vinylEntity) {
         int qualityChoice = (McUtils.readInt("Plağın hızı nedir?\n " +
@@ -149,15 +172,9 @@ public class AdminPanel {
                 " 3) HIGH\"\n"));
 
         switch (qualityChoice) {
-            case 1:
-                vinylEntity.setSpeed(EVinylRPM.LOW);
-                break;
-            case 2:
-                vinylEntity.setSpeed(EVinylRPM.MEDIUM);;
-                break;
-            case 3:
-                vinylEntity.setSpeed(EVinylRPM.HIGH);
-                break;
+            case 1 -> vinylEntity.setSpeed(EVinylRPM.LOW);
+            case 2 -> vinylEntity.setSpeed(EVinylRPM.MEDIUM);
+            case 3 -> vinylEntity.setSpeed(EVinylRPM.HIGH);
         }
     }
 
@@ -168,15 +185,9 @@ public class AdminPanel {
                 " 3) 12\"\n"));
 
         switch (qualityChoice) {
-            case 1:
-                vinylEntity.setDiameter(EVinlyDiameter.SEVEN);
-                break;
-            case 2:
-                vinylEntity.setDiameter(EVinlyDiameter.TEN);
-                break;
-            case 3:
-                vinylEntity.setDiameter(EVinlyDiameter.TWELVE);
-                break;
+            case 1 -> vinylEntity.setDiameter(EVinlyDiameter.SEVEN);
+            case 2 -> vinylEntity.setDiameter(EVinlyDiameter.TEN);
+            case 3 -> vinylEntity.setDiameter(EVinlyDiameter.TWELVE);
         }
     }
 
@@ -191,27 +202,13 @@ public class AdminPanel {
                 " 6) Hip Hop\n" +
                 "7) Soul\n"));
         switch (genreChoice) {
-            case 1:
-                cdEntity.setGenre(EGenre.BLUES);
-                break;
-            case 2:
-                cdEntity.setGenre(EGenre.JAZZ);
-                break;
-            case 3:
-                cdEntity.setGenre(EGenre.ROCK);
-                break;
-            case 4:
-                cdEntity.setGenre(EGenre.COUNTRY);
-                break;
-            case 5:
-                cdEntity.setGenre(EGenre.DANCE);
-                break;
-            case 6:
-                cdEntity.setGenre(EGenre.HIPHOP);
-                break;
-            case 7:
-                cdEntity.setGenre(EGenre.SOUL);
-                break;
+            case 1 -> cdEntity.setGenre(EGenre.BLUES);
+            case 2 -> cdEntity.setGenre(EGenre.JAZZ);
+            case 3 -> cdEntity.setGenre(EGenre.ROCK);
+            case 4 -> cdEntity.setGenre(EGenre.COUNTRY);
+            case 5 -> cdEntity.setGenre(EGenre.DANCE);
+            case 6 -> cdEntity.setGenre(EGenre.HIPHOP);
+            case 7 -> cdEntity.setGenre(EGenre.SOUL);
         }
     }
 
@@ -226,27 +223,13 @@ public class AdminPanel {
                 " 6) Hip Hop\n" +
                 " 7) Soul\n"));
         switch (genreChoice) {
-            case 1:
-                dvdEntity.setGenre(EGenre.BLUES);
-                break;
-            case 2:
-                dvdEntity.setGenre(EGenre.JAZZ);
-                break;
-            case 3:
-                dvdEntity.setGenre(EGenre.ROCK);
-                break;
-            case 4:
-                dvdEntity.setGenre(EGenre.COUNTRY);
-                break;
-            case 5:
-                dvdEntity.setGenre(EGenre.DANCE);
-                break;
-            case 6:
-                dvdEntity.setGenre(EGenre.HIPHOP);
-                break;
-            case 7:
-                dvdEntity.setGenre(EGenre.SOUL);
-                break;
+            case 1 -> dvdEntity.setGenre(EGenre.BLUES);
+            case 2 -> dvdEntity.setGenre(EGenre.JAZZ);
+            case 3 -> dvdEntity.setGenre(EGenre.ROCK);
+            case 4 -> dvdEntity.setGenre(EGenre.COUNTRY);
+            case 5 -> dvdEntity.setGenre(EGenre.DANCE);
+            case 6 -> dvdEntity.setGenre(EGenre.HIPHOP);
+            case 7 -> dvdEntity.setGenre(EGenre.SOUL);
         }
     }
 
@@ -257,15 +240,9 @@ public class AdminPanel {
                 " 3) HIGH\n"));
 
         switch (qualityChoice) {
-            case 1:
-                dvdEntity.setQuality(EDVDQuality.LOW);
-                break;
-            case 2:
-                dvdEntity.setQuality(EDVDQuality.MEDIUM);
-                break;
-            case 3:
-                dvdEntity.setQuality(EDVDQuality.HIGH);
-                break;
+            case 1 -> dvdEntity.setQuality(EDVDQuality.LOW);
+            case 2 -> dvdEntity.setQuality(EDVDQuality.MEDIUM);
+            case 3 -> dvdEntity.setQuality(EDVDQuality.HIGH);
         }
     }
 
@@ -279,30 +256,16 @@ public class AdminPanel {
                     " 5) Dance\n" +
                     " 6) Hip Hop\n" +
                     "7) Soul\n"));
-            switch (genreChoice) {
-                case 1:
-                    vinylEntity.setGenre(EGenre.BLUES);
-                    break;
-                case 2:
-                    vinylEntity.setGenre(EGenre.JAZZ);
-                    break;
-                case 3:
-                    vinylEntity.setGenre(EGenre.ROCK);
-                    break;
-                case 4:
-                    vinylEntity.setGenre(EGenre.COUNTRY);
-                    break;
-                case 5:
-                    vinylEntity.setGenre(EGenre.DANCE);
-                    break;
-                case 6:
-                    vinylEntity.setGenre(EGenre.HIPHOP);
-                    break;
-                case 7:
-                    vinylEntity.setGenre(EGenre.SOUL);
-                    break;
-            }
+        switch (genreChoice) {
+            case 1 -> vinylEntity.setGenre(EGenre.BLUES);
+            case 2 -> vinylEntity.setGenre(EGenre.JAZZ);
+            case 3 -> vinylEntity.setGenre(EGenre.ROCK);
+            case 4 -> vinylEntity.setGenre(EGenre.COUNTRY);
+            case 5 -> vinylEntity.setGenre(EGenre.DANCE);
+            case 6 -> vinylEntity.setGenre(EGenre.HIPHOP);
+            case 7 -> vinylEntity.setGenre(EGenre.SOUL);
         }
+    }
 }
 
 

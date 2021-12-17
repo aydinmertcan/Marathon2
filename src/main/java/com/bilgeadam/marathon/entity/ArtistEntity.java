@@ -1,6 +1,5 @@
 package com.bilgeadam.marathon.entity;
 
-import com.bilgeadam.marathon.model.Album;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -8,7 +7,6 @@ import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 @Data
 @NoArgsConstructor

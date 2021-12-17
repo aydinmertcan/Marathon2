@@ -162,5 +162,21 @@ private static Scanner scan = new Scanner(System.in);
 		scan.nextLine();
 		return !retVal;
 	}
-	
+
+	public static long readLong(String query) {
+		showQuery(query);
+		do {
+			boolean isDigit = true;
+			String input = scan.next().trim();
+			scan.nextLine();
+			for (int i = 0; i < input.length(); i++) {
+				if (!Character.isDigit(input.charAt(i))) {
+					isDigit = false;
+				}
+			}
+			if (isDigit)
+				return Long.parseLong(input + "");
+
+		} while (true);
+	}
 }
