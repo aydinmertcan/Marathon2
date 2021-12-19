@@ -12,6 +12,7 @@ import com.bilgeadam.marathon.enums.EDVDQuality;
 import com.bilgeadam.marathon.enums.EGenre;
 import com.bilgeadam.marathon.enums.EVinlyDiameter;
 import com.bilgeadam.marathon.enums.EVinylRPM;
+import com.bilgeadam.marathon.model.Artist;
 import com.bilgeadam.marathon.util.McUtils;
 
 public class AdminPanel {
@@ -20,12 +21,17 @@ public class AdminPanel {
         System.out.println();
         int choice = 0;
         do {
-            choice = McUtils.readInt("Lütfen ne yapmak istediğinizi seçiniz:\n" + "\t1) Albüm oluştur\n"
-                    + "\t2) Albüm güncelle\n" + "\t3) Albüm sil\n" + "\t99) Exit\n");
+            choice = McUtils.readInt("Lütfen ne yapmak istediğinizi seçiniz:\n" +
+                    "\t1) Albüm oluştur\n" +
+                    "\t2) Albüm güncelle\n" +
+                    "\t3) Albüm sil\n" +
+                    "\t4) Default Database oluştur.\n" +
+                    "\t99) Exit\n");
             switch (choice) {
                 case 1 -> createAlbum();
                 case 2 -> updateAlbum();
                 case 3 -> deleteAlbum();
+                case 4 -> addDefaultDatas();
                 case 99 -> System.exit(-1);
             }
 
@@ -64,7 +70,7 @@ public class AdminPanel {
         int choice = 0;
         ArtistEntity artist = new ArtistEntity();
         ArtistController artistController = new ArtistController();
-        choice = McUtils.readInt("Oluşturmak istediğiniz albümün tipi:\n" + "\t1) CD\n"
+        choice = McUtils.readInt("Değiştirmek istediğiniz albümün tipi:\n" + "\t1) CD\n"
                 + "\t2) DVD\n" + "\t3) Vinyl\n" + "\t99) Exit\n");
 
         switch (choice) {
@@ -103,7 +109,7 @@ public class AdminPanel {
                 if (isDiscountCD.equalsIgnoreCase("Y")) {
                     cdEntity.setDiscountRate(McUtils.readDouble("İndirim oranı (0 ile 1 arasında verilmelidir (Ex. 0.2)): "));
                 } else {
-                    cdEntity.setDiscountRate(1);
+                    cdEntity.setDiscountRate(0);
                 }
                 setAlbumGenres(cdEntity);
                 cdController.setDiscountedPrice(cdEntity);
@@ -111,7 +117,6 @@ public class AdminPanel {
                 artist.setLastName(McUtils.readString("Artistin soyadı"));
                 artist.setDescription(McUtils.readString("Artistin kısa biyografisi"));
                 cdEntity.setArtist(artist);
-                artist.addCD(cdEntity);
                 artistController.create(artist);
                 cdController.create(cdEntity);
             }
@@ -124,7 +129,7 @@ public class AdminPanel {
                 if (isDiscountDVD.equalsIgnoreCase("Y")) {
                     dvdEntity.setDiscountRate(McUtils.readDouble("İndirim oranı (0 ile 1 arasında verilmelidir (Ex. 0.2)): "));
                 } else {
-                    dvdEntity.setDiscountRate(1);
+                    dvdEntity.setDiscountRate(0);
                 }
                 setAlbumGenres(dvdEntity);
                 setAlbumQuality(dvdEntity);
@@ -133,7 +138,6 @@ public class AdminPanel {
                 artist.setLastName(McUtils.readString("Artistin soyadı: "));
                 artist.setDescription(McUtils.readString("Artistin kısa biyografisi: "));
                 dvdEntity.setArtist(artist);
-                artist.addDVD(dvdEntity);
                 artistController.create(artist);
                 dvdController.create(dvdEntity);
             }
@@ -146,7 +150,7 @@ public class AdminPanel {
                 if (isDiscountVinyl.equalsIgnoreCase("Y")) {
                     vinylEntity.setDiscountRate(McUtils.readDouble("İndirim oranı (0 ile 1 arasında verilmelidir (Ex. 0.2)): "));
                 } else {
-                    vinylEntity.setDiscountRate(1);
+                    vinylEntity.setDiscountRate(0);
                 }
                 setAlbumGenres(vinylEntity);
                 setVinylDiameter(vinylEntity);
@@ -155,15 +159,12 @@ public class AdminPanel {
                 artist.setLastName(McUtils.readString("Artistin soyadı: "));
                 artist.setDescription(McUtils.readString("Artistin kısa biyografisi: "));
                 vinylEntity.setArtist(artist);
-                artist.addVinyl(vinylEntity);
                 artistController.create(artist);
                 vinylController.create(vinylEntity);
             }
             case 99 -> System.exit(-1);
         }
     }
-
-
 
     private void setVinylSpeed(VinylEntity vinylEntity) {
         int qualityChoice = (McUtils.readInt("Plağın hızı nedir?\n " +
@@ -249,7 +250,7 @@ public class AdminPanel {
     public void setAlbumGenres (VinylEntity vinylEntity){
 
             int genreChoice = (McUtils.readInt("Albümün tarzı nedir?\n " +
-                    "1) Blues \n" +
+                    " 1) Blues \n" +
                     " 2) Jazz\n" +
                     " 3) Rock\n" +
                     " 4) Country\n" +
@@ -265,6 +266,143 @@ public class AdminPanel {
             case 6 -> vinylEntity.setGenre(EGenre.HIPHOP);
             case 7 -> vinylEntity.setGenre(EGenre.SOUL);
         }
+    }
+
+    public void addDefaultDatas() {
+        ArtistEntity artist1 = new ArtistEntity();
+        CDEntity cdEntity1 = new CDEntity();
+        artist1.setFirstName("Nirvana");
+        artist1.setDescription("American Rock Band.");
+        cdEntity1.setName("Nevermind");
+        cdEntity1.setPrice(30);
+        cdEntity1.setDiscountRate(0.15);
+        cdEntity1.setGenre(EGenre.ROCK);
+        cdEntity1.setArtist(artist1);
+        CDEntity cdEntity2 = new CDEntity();
+        cdEntity2.setName("In Utero");
+        cdEntity2.setPrice(25);
+        cdEntity2.setGenre(EGenre.ROCK);
+        cdEntity2.setArtist(artist1);
+
+        ArtistEntity artist2 = new ArtistEntity();
+        DVDEntity dvdEntity1 = new DVDEntity();
+        artist2.setFirstName("Muse");
+        artist2.setDescription("English Rock Band");
+        dvdEntity1.setName("Showbiz");
+        dvdEntity1.setPrice(40);
+        dvdEntity1.setDiscountRate(0.1);
+        dvdEntity1.setGenre(EGenre.ROCK);
+        dvdEntity1.setQuality(EDVDQuality.HIGH);
+        dvdEntity1.setArtist(artist2);
+        DVDEntity dvdEntity2 = new DVDEntity();
+        dvdEntity2.setName("Absolution");
+        dvdEntity2.setPrice(35);
+        dvdEntity2.setGenre(EGenre.ROCK);
+        dvdEntity2.setQuality(EDVDQuality.HIGH);
+        dvdEntity2.setArtist(artist2);
+
+        ArtistEntity artist3 = new ArtistEntity();
+        artist3.setFirstName("Miles");
+        artist3.setLastName("Davis");
+        artist3.setDescription("American trumpeter");
+        VinylEntity vinylEntity1 = new VinylEntity();
+        vinylEntity1.setName("King of Blue");
+        vinylEntity1.setPrice(45);
+        vinylEntity1.setDiscountRate(0.05);
+        vinylEntity1.setGenre(EGenre.JAZZ);
+        vinylEntity1.setDiameter(EVinlyDiameter.SEVEN);
+        vinylEntity1.setSpeed(EVinylRPM.HIGH);
+        vinylEntity1.setArtist(artist3);
+        VinylEntity vinylEntity2 = new VinylEntity();
+        vinylEntity2.setName("Miles In Tokyo");
+        vinylEntity2.setPrice(40);
+        vinylEntity2.setDiscountRate(0.12);
+        vinylEntity2.setGenre(EGenre.JAZZ);
+        vinylEntity2.setDiameter(EVinlyDiameter.TEN);
+        vinylEntity2.setSpeed(EVinylRPM.MEDIUM);
+        vinylEntity2.setArtist(artist3);
+
+        ArtistEntity artist4 = new ArtistEntity();
+        artist4.setFirstName("Kenny");
+        artist4.setLastName("Rogers");
+        artist4.setDescription("American singer, songwriter, musician, actor, record producer, and entrepreneur.");
+        VinylEntity vinylEntity3 = new VinylEntity();
+        vinylEntity3.setName("Christmas");
+        vinylEntity3.setPrice(5);
+        vinylEntity3.setGenre(EGenre.COUNTRY);
+        vinylEntity3.setDiameter(EVinlyDiameter.TWELVE);
+        vinylEntity3.setSpeed(EVinylRPM.LOW);
+        vinylEntity3.setArtist(artist4);
+        DVDEntity dvdEntity3 = new DVDEntity();
+        dvdEntity3.setName("Golden Hits Collection");
+        dvdEntity3.setPrice(12);
+        dvdEntity3.setDiscountRate(0.1);
+        dvdEntity3.setGenre(EGenre.COUNTRY);
+        dvdEntity3.setQuality(EDVDQuality.MEDIUM);
+        dvdEntity3.setArtist(artist4);
+
+        ArtistEntity artist5 = new ArtistEntity();
+        artist5.setFirstName("Sam");
+        artist5.setLastName("Dees");
+        artist5.setDescription(" American soul singer, songwriter and record producer.");
+        CDEntity cdEntity3 = new CDEntity();
+        cdEntity3.setName("The Show Must Go On");
+        cdEntity3.setPrice(50);
+        cdEntity3.setDiscountRate(0.25);
+        cdEntity3.setGenre(EGenre.SOUL);
+        cdEntity3.setArtist(artist5);
+
+        ArtistEntity artist6 = new ArtistEntity();
+        artist6.setFirstName("Eric");
+        artist6.setLastName("Clapton");
+        artist6.setDescription("English rock and blues guitarist, singer, and songwriter,");
+        CDEntity cdEntity4 = new CDEntity();
+        cdEntity4.setName("Reptile");
+        cdEntity4.setPrice(80);
+        cdEntity4.setDiscountRate(0.11);
+        cdEntity4.setGenre(EGenre.BLUES);
+        cdEntity4.setArtist(artist6);
+        DVDEntity dvdEntity4 = new DVDEntity();
+        dvdEntity4.setName("Me and Mr. Johnson");
+        dvdEntity4.setPrice(120);
+        dvdEntity4.setGenre(EGenre.BLUES);
+        dvdEntity4.setQuality(EDVDQuality.MEDIUM);
+        dvdEntity4.setArtist(artist6);
+
+
+
+
+        ArtistController artistController = new ArtistController();
+        CDController cdController = new CDController();
+        DVDController dvdController = new DVDController();
+        VinylController vinylController = new VinylController();
+
+        artistController.create(artist1);
+        cdController.create(cdEntity1);
+        cdController.create(cdEntity2);
+
+        artistController.create(artist2);
+        dvdController.create(dvdEntity1);
+        dvdController.create(dvdEntity2);
+
+        artistController.create(artist3);
+        vinylController.create(vinylEntity1);
+        vinylController.create(vinylEntity2);
+
+        artistController.create(artist4);
+        vinylController.create(vinylEntity3);
+        dvdController.create(dvdEntity3);
+
+        artistController.create(artist5);
+        cdController.create(cdEntity3);
+
+        artistController.create(artist6);
+        cdController.create(cdEntity4);
+        dvdController.create(dvdEntity4);
+
+
+
+
     }
 }
 

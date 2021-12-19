@@ -35,9 +35,6 @@ public class Menu {
         String password = McUtils.readString("Şifrenizi giriniz: ");
         UserController userController = new UserController();
         userController.validateLoginInfos(userName, password);
-        System.out.println("\n\nYönlendiriliyorsunuz...");
-        UserPanel userPanel = new UserPanel();
-        userPanel.showMenuItems();
     }
 
     private void signupScreen() {

@@ -20,7 +20,7 @@ import java.util.Date;
 @Table(name = "cds")
 public class CDEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
     private long id;
 
@@ -50,7 +50,7 @@ public class CDEntity {
 
     public CDEntity(String name, double price, double discountRate, EGenre genre) {
         this.name = name;
-        this.price = price * discountRate;
+        this.price = price;
         this.discountRate = discountRate;
         this.genre = genre;
     }

@@ -56,7 +56,7 @@ public class DVDEntity {
 
     public DVDEntity(String name, double price, double discountRate, EGenre genre, EDVDQuality quality) {
         this.name = name;
-        this.price = price * discountRate;
+        this.price = price;
         this.discountRate = discountRate;
         this.genre = genre;
         this.quality = quality;

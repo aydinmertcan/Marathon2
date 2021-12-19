@@ -2,7 +2,10 @@ package com.bilgeadam.marathon.controller;
 
 import com.bilgeadam.marathon.entity.CDEntity;
 import com.bilgeadam.marathon.entity.DVDEntity;
+import com.bilgeadam.marathon.entity.VinylEntity;
+import com.bilgeadam.marathon.enums.EDVDQuality;
 import com.bilgeadam.marathon.enums.EGenre;
+import com.bilgeadam.marathon.enums.EVinylRPM;
 import com.bilgeadam.marathon.util.McUtils;
 import org.hibernate.Session;
 
@@ -38,6 +41,7 @@ public class DVDController implements Controllable<DVDEntity>{
                 findEntity.setPrice(McUtils.readDouble("Fiyatı giriniz"));
                 findEntity.setDiscountRate(McUtils.readDouble("İndirim oranını giriniz (0 - 1 --> Ex. 0,3)"));
                 chooseGenre(findEntity);
+                chooseQuality(findEntity);
                 setDiscountedPrice(findEntity);
 
                 session.merge(findEntity);
@@ -97,6 +101,18 @@ public class DVDController implements Controllable<DVDEntity>{
             case 5 -> findEntity.setGenre(EGenre.DANCE);
             case 6 -> findEntity.setGenre(EGenre.HIPHOP);
             case 7 -> findEntity.setGenre(EGenre.SOUL);
+        }
+    }
+
+    private void chooseQuality(DVDEntity findEntity) {
+        int diaChoice = (McUtils.readInt("DVD'nin kalitesini seçiniz?\n " +
+                " 1) LOW \n" +
+                " 2) MEDIUM\n" +
+                " 3) HIGH\n"));
+        switch (diaChoice) {
+            case 1 -> findEntity.setQuality(EDVDQuality.LOW);
+            case 2 -> findEntity.setQuality(EDVDQuality.MEDIUM);
+            case 3 -> findEntity.setQuality(EDVDQuality.HIGH);
         }
     }
 }

@@ -16,7 +16,7 @@ import java.util.Set;
 @Table(name = "artists")
 public class ArtistEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
     private long id;
 

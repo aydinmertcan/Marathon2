@@ -3,6 +3,7 @@ package com.bilgeadam.marathon.controller;
 
 import com.bilgeadam.marathon.entity.UserEntity;
 import com.bilgeadam.marathon.util.McUtils;
+import com.bilgeadam.marathon.view.UserPanel;
 import org.hibernate.Session;
 
 import javax.persistence.TypedQuery;
@@ -58,14 +59,16 @@ public class UserController implements Controllable<UserEntity>{
         userEntity.setUsername(userName);
         userEntity.setPassword(password);
 
-        String hql = "select ue from UserEntity as ue where ue.username=:key1 and ue.password=:key2";
+        String hql = "select ue from UserEntity as ue where username=:key1 and password=:key2";
         TypedQuery<UserEntity> typedQuery = session.createQuery(hql, UserEntity.class);
         typedQuery.setParameter("key1", userEntity.getUsername());
         typedQuery.setParameter("key2", userEntity.getPassword());
         try {
             System.out.println(userEntity.getUsername());
             userEntity = typedQuery.getSingleResult();
-
+            System.out.println("\n\tHoşgeldin " + userEntity.getUsername() + "!");
+            UserPanel userPanel = new UserPanel();
+            userPanel.showMenuItems();
         } catch (Exception e) {
             System.out.println("Kullanıcı adı veya şifre yanlış, tekrar deneyin");
         }

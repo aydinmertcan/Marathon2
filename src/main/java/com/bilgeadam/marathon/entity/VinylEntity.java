@@ -58,7 +58,7 @@ public class VinylEntity {
 
         public VinylEntity(String name, double price, double discountRate, EGenre genre, EVinlyDiameter diameter, EVinylRPM speed) {
                 this.name = name;
-                this.price = price * discountRate;
+                this.price = price;
                 this.discountRate = discountRate;
                 this.genre = genre;
                 this.diameter = diameter;

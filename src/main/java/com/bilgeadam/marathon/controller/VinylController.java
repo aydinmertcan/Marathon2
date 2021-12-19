@@ -2,6 +2,8 @@ package com.bilgeadam.marathon.controller;
 
 import com.bilgeadam.marathon.entity.VinylEntity;
 import com.bilgeadam.marathon.enums.EGenre;
+import com.bilgeadam.marathon.enums.EVinlyDiameter;
+import com.bilgeadam.marathon.enums.EVinylRPM;
 import com.bilgeadam.marathon.util.HibernateUtil;
 import com.bilgeadam.marathon.util.McUtils;
 import org.hibernate.Session;
@@ -40,6 +42,8 @@ public class VinylController implements Controllable<VinylEntity>{
                 findEntity.setDiscountRate(McUtils.readDouble("İndirim oranını giriniz (0 - 1 --> Ex. 0,3)"));
                 chooseGenre(findEntity);
                 setDiscountedPrice(findEntity);
+                chooseDiameter(findEntity);
+                chooseRPM(findEntity);
 
                 session.merge(findEntity);
                 session.getTransaction().commit();
@@ -108,6 +112,30 @@ public class VinylController implements Controllable<VinylEntity>{
             case 5 -> findEntity.setGenre(EGenre.DANCE);
             case 6 -> findEntity.setGenre(EGenre.HIPHOP);
             case 7 -> findEntity.setGenre(EGenre.SOUL);
+        }
+    }
+
+    private void chooseDiameter(VinylEntity findEntity) {
+        int diaChoice = (McUtils.readInt("Plağın boyutu nedir?\n " +
+                " 1) 7\" \n" +
+                " 2) 10\"\n" +
+                " 3) 12\"\n"));
+        switch (diaChoice) {
+            case 1 -> findEntity.setDiameter(EVinlyDiameter.SEVEN);
+            case 2 -> findEntity.setDiameter(EVinlyDiameter.TEN);
+            case 3 -> findEntity.setDiameter(EVinlyDiameter.TWELVE);
+        }
+    }
+
+    private void chooseRPM(VinylEntity findEntity) {
+        int diaChoice = (McUtils.readInt("Plağın hızını seçiniz?\n " +
+                " 1) LOW \n" +
+                " 2) MEDIUM\n" +
+                " 3) HIGH\n"));
+        switch (diaChoice) {
+            case 1 -> findEntity.setSpeed(EVinylRPM.LOW);
+            case 2 -> findEntity.setSpeed(EVinylRPM.MEDIUM);
+            case 3 -> findEntity.setSpeed(EVinylRPM.HIGH);
         }
     }
 }

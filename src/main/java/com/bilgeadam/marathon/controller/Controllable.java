@@ -15,7 +15,7 @@ public interface Controllable <T>{
         try {
             Session session = databaseConnectionHibernate();
             session.getTransaction().begin();
-            session.persist(entity); // create
+            session.save(entity); // create
             session.getTransaction().commit();
             LogUtil.getInstance().logInfo("Ekleme islemi tamamlandi : >> " + entity);
         } catch (Exception e) {
